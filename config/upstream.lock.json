@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/CapSoftware/Cap.git",
+  "tag": "cap-v0.5.9",
+  "commit": "c6b83804d2e9fa8757b75268e573b8ff113141bb",
+  "sourceDirectory": "upstream/Cap",
+  "target": "x86_64-pc-windows-msvc",
+  "nodeMinimumMajor": 20,
+  "pnpm": "10.5.2",
+  "rust": "1.88.0",
+  "lockfiles": {
+    "pnpm-lock.yaml": "E4833004A0D701E5E6AD208013178BB254196BC5AA81B1EFBF701AF5AC357481",
+    "Cargo.lock": "57CC023F19139EEEA66126E5ABB0690FEAFBC64B09567C6EF874D7E416D940B1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "cap-zh-workspace-tools",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Project-local tool versions; no global package manager changes",
+  "dependencies": {
+    "pnpm": "10.5.2"
+  }
+}

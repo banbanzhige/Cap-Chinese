@@ -1,0 +1,10 @@
+/upstream/
+/references/
+/artifacts/
+/logs/
+/tooling/node_modules/
+/tooling/.npm-cache/
+.env
+.env.*
+!.env.example
+*.local.*
