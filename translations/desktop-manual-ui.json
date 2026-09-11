@@ -1,0 +1,13 @@
+{
+  "apps/desktop/src/utils/recording.ts": {"Login": "登录"},
+  "apps/desktop/src/routes/(window-chrome)/onboarding.tsx": {"Studio Mode": "工作室模式", "Instant Mode": "即时模式", "Record": "录制", "Edit": "编辑", "Export": "导出", "Select area": "选择区域", "Beautify": "美化", "Copy": "复制"},
+  "apps/desktop/src/routes/editor/ClipsSidebar.tsx": {"Clip {0}": "片段 {0}", "Area": "区域", "Camera Only": "仅摄像头"},
+  "apps/desktop/src/routes/editor/OrganizationDropdown.tsx": {"Failed to update organization branding": "组织品牌设置更新失败"},
+  "apps/desktop/src/routes/editor/text.ts": {"Text": "文字"},
+  "apps/desktop/src/routes/editor/TextOverlay.tsx": {"Text": "文字"},
+  "apps/desktop/src/routes/editor/TranscriptPage.tsx": {"New caption": "新字幕"},
+  "apps/desktop/src/routes/(window-chrome)/new-main/CameraSelect.tsx": {"Camera": "摄像头"},
+  "apps/desktop/src/routes/(window-chrome)/new-main/index.tsx": {"Auto": "自动", "Stereo": "立体声", "Camera settings": "摄像头设置", "Microphone settings": "麦克风设置", "Search displays": "搜索显示器", "Search windows": "搜索窗口", "Search recordings": "搜索录屏", "Search screenshots": "搜索截图", "Search cameras": "搜索摄像头", "Search microphones": "搜索麦克风"},
+  "apps/desktop/src/routes/(window-chrome)/new-main/TargetCard.tsx": {"Display": "显示器", "Window": "窗口"},
+  "apps/desktop/src/routes/editor/Timeline/MaskTrack.tsx": {"Sensitive": "隐私遮罩", "Highlight": "高亮"}
+}

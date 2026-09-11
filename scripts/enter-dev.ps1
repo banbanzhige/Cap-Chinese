@@ -16,4 +16,5 @@ $capPathEntries = @(
 )
 $env:PATH = ($capPathEntries -join ';') + ';' + $env:PATH
 $env:VCPKG_ROOT = Join-Path $capVsPath 'VC/vcpkg'
+$env:LIBCLANG_PATH = Join-Path $capVsPath 'VC/Tools/LLVM/x64/bin'
 Write-Host 'Cap x64 build shell initialized for this process only. No server started.'

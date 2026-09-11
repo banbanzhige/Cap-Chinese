@@ -1,0 +1,7 @@
+{
+	"version": "0.5.9",
+	"locale": "zh-CN",
+	"platform": "windows-x64",
+	"revision": 2,
+	"build": "debug-community-unsigned"
+}

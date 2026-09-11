@@ -1,63 +1,92 @@
-# Cap-ZH-Patcher 工作环境
+# Cap Chinese
 
-为 Windows x64 / Cap 0.5.9 准备的隔离 P0 工作区。当前只准备开发环境，没有汉化已安装的 Cap，没有生成可用补丁。
+基于 [Cap](https://github.com/CapSoftware/Cap) 的非官方简体中文适配项目，主要用于个人自用，同时公开译文、源码补丁和构建记录，方便有相同需求的人参考。
 
-## 当前状态（2026-09-11）
+本项目不隶属于 Cap 官方，不提供官方签名、账号或会员授权，不修改付费判断。主要由个人按需维护，不承诺更新周期、兼容所有设备或提供商业支持。
 
-- 官方源码已下载至 `upstream/Cap`，固定 tag `cap-v0.5.9`、提交 `c6b83804d2e9fa8757b75268e573b8ff113141bb`。保持原始源码不变，未创建提交或发布远程仓库。
-- Node 24.15.0 满足上游 Node >=20 要求；实际依赖安装/构建兼容性尚未验证。
-- 项目专用 pnpm 10.5.2 已安装并验证；安装使用 `--ignore-scripts`，未修改全局包管理器。
-- 已检测 VS Build Tools 17.14、MSVC 14.44、CMake、Ninja、Vcpkg、WebView2。
-- 缺少上游脚本指定路径的 LLVM `libclang.dll`；需在 Visual Studio Installer 中补齐 C++ Clang tools for Windows。
-- 现有 Rust stable 为 1.94.1，但仓库固定 1.88.0，后续并存安装，不修改系统默认工具链。
-- F 盘仅约 5.4 GiB 空闲，暂不安装完整 JS/Rust/FFmpeg/ONNX 依赖，不启动构建。脚本以 50 GiB 作为本项目的保守空间检查阈值，不代表上游公布的最低需求；最终占用尚未实测。
-- 尚未执行桌面启动、录制、导出、还原验收。
-- 已验证：PowerShell 脚本语法、JSON 解析、pnpm 版本、x64 开发终端中的 CMake/Ninja/Vcpkg、上游工作树干净及锁文件哈希。
+## 当前版本
 
-## 目录与入口
+- 基于官方 `cap-v0.5.9`，提交 `c6b83804d2e9fa8757b75268e573b8ff113141bb`。
+- 目标平台：Windows x64；其他平台尚未验证。
+- 参考 [PingGai/Cap-Chinese](https://github.com/PingGai/Cap-Chinese) 的旧版汉化，并按 0.5.9 的界面和逻辑重新适配。感谢原作者和上游贡献者。
 
-| 路径 | 用途 |
+这是一个**汉化补丁与构建工作区**，不是完整的 Cap 源码镜像。Git 仓库不提交上游 checkout、node_modules、编译缓存、个人配置或运行包。完整改动见 [前端补丁](translations/desktop-0.5.9.patch) 和 [原生补丁](translations/native-0.5.9.patch)。
+
+<table width="100%">
+  <tr>
+    <!-- 合并3列，整行放图1 -->
+    <td colspan="3" align="center">
+      <a href="img/01.png"><img src="img/cap-01.png" width="100%"></a>
+    </td>
+  </tr>
+  <tr>
+    <!-- 下面一行两格：图2、图3 -->
+    <td width="20%" align="center">
+      <a href="img/02.png"><img src="img/cap-02.png" width="100%"></a>
+    </td>
+    <td width="30%" align="center">
+      <a href="img/02.png"><img src="img/cap-03.png" width="100%"></a>
+    </td>
+  </tr>
+</table>
+
+
+
+
+## 汉化内容
+
+覆盖主界面、设备与目标选择、首次引导、录制状态、提词器、视频编辑器、时间轴、字幕、导出、截图编辑器、设置子页，以及原生窗口标题、托盘菜单和系统通知。
+
+品牌名、格式名、快捷键、设备名和用户内容保留原值；服务器返回的错误、在线页面、更新日志、部分底层错误与 CLI 帮助仍可能为英文。
+
+相较旧参考版本，补充了截图编辑器、自动化、命令行、转写/字幕、多轨编辑等新增界面的中文文案。修改不替换底层录制算法，不绕过权限、授权或会员限制。
+
+## 使用方法
+
+下载Releases中的最新压缩包解压使用，如：
+
+1. 完整解压 `0.5.9-zh-CN.zip`。
+2. 在 `0.5.9-zh-CN` 目录中双击 `Cap Chinese.exe`。
+3. 保留同目录全部 DLL、辅助程序和 `assets`；不要只复制 EXE，不要覆盖官方安装目录。
+
+需要 [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/) 和可用的图形驱动。未签名不等于获得系统信任；请核验来源与哈希，不要关闭系统安全防护。
+
+
+## 数据和账号
+
+中文版默认使用独立标识 `so.cap.desktop.zh`：
+
+- 配置和工程默认位于 `%APPDATA%\\so.cap.desktop.zh`。
+- 日志位于 `%LOCALAPPDATA%\\so.cap.desktop.zh\\logs`。
+- 不自动导入官方版账号、设置或录屏。解压运行不代表所有数据随程序目录移动。
+- 不要同时运行官方版和中文版，以免竞争快捷键、摄像头等资源。
+- 已有官方 `cap` 命令时，不要随意使用设置中的“安装/卸载命令行工具”，它可能影响 PATH 中的入口。
+
+Cap 的在线登录、上传、分享和其他服务仍受相关服务条款约束。汉化不使应用自动离线，也不替你取得服务授权或取消上游隐私设置。
+
+
+## 查看源码与构建
+
+参见 [开发与补丁说明](docs/DEVELOPMENT.md)。两个完整补丁均针对上面的固定提交，前端补丁已经包含早期设置页改动，**不要再叠加 `settings-0.5.9.patch`**。
+
+| 目录 | 内容 |
 | --- | --- |
-| `upstream/Cap` | 独立的官方 Git checkout；源码工作在此进行 |
-| `config/upstream.lock.json` | 上游提交、工具版本和两个依赖锁文件的 SHA-256 |
-| `tooling` | 工作区专用 pnpm 10.5.2，不安装到全局 |
-| `scripts/doctor.ps1` | 只读环境检查，不自动下载或运行构建 |
-| `scripts/enter-dev.ps1` | 初始化当前 PowerShell 的 x64 C++ 工具路径 |
-| `scripts/pnpm.ps1` | 自动进入上游目录并调用本地 pnpm |
-| `docs/P0.md` | 本轮范围、下一阶段验收与安全边界 |
+| `translations/` | 译文清单、完整前端/原生补丁；旧设置补丁仅供历史参考 |
+| `config/` | 版本固定信息、公开环境模板、构建配置 |
+| `scripts/` | 构建、汉化与打包检查；部分脚本依赖本地双工作树布局 |
+| `licenses/` | 上游与参考项目的原始许可声明 |
+| `docs/` | 构建、许可和发布说明；历史记录不代表当前验收结果 |
 
-从本工作区根目录执行：
+## 反馈与贡献
 
-```powershell
-./scripts/doctor.ps1
-./scripts/pnpm.ps1 --version
-```
+欢迎通过仓库 Issues 提交漏译、错译、界面截断和明确的复现步骤。请附版本、Windows 版本和经过遮盖的截图；不要上传完整配置、Token、账号资料、私人录屏或未经检查的日志。
 
-可用 `./scripts/doctor.ps1 -RequireBuildReady` 在存在待办时返回非零退出码。检查通过只代表初步条件和文件存在，不代表编译或功能验收通过。
+小范围、单一主题的修正更容易合并。涉及文案时不要翻译枚举、后端命令、设备 ID 或快捷键值。贡献须保留原作者署名与适用许可，不要求转让著作权。
 
-## 空间问题解决后的准备顺序
+## 许可与致谢
 
-优先在用户确认后，将整个工作区复制到 D/E 盘的短路径，核对源码和锁文件后再继续；不要擅自删除 F 盘原目录。上游脚本在多个位置硬编码 `target`，不能仅设置 `CARGO_TARGET_DIR` 就假设完成迁移。
+本仓库新增的译文、补丁、脚本和文档（未另行标注者）按 **GNU AGPL v3.0 only** 发布，完整条款见 [LICENSE](LICENSE)，适用范围和第三方例外见 [许可说明](docs/LICENSING.md) 与 [NOTICE](NOTICE)。
 
-1. 通过 Visual Studio Installer 给现有 Build Tools 补齐 C++ Clang tools for Windows，确认 `VC/Tools/LLVM/x64/bin/libclang.dll` 存在；安装器可能要求管理员权限。
-2. 并存安装固定 Rust：`rustup toolchain install 1.88.0 --profile minimal --component rustfmt --component clippy`。不执行 `rustup default`。
-3. 如果本地 pnpm 尚未安装，执行 `npm.cmd ci --prefix tooling --cache tooling/.npm-cache --ignore-scripts --no-audit --no-fund`。
-4. 初始化当前终端：`. ./scripts/enter-dev.ps1`。只影响当前进程；关闭终端即可丢弃环境变量变更。
-5. `./scripts/pnpm.ps1 install --frozen-lockfile`：首次安装按上游完整 workspace 方式验证，可能下载大量依赖；不更新锁文件，也不安装网页数据库服务。
-6. `./scripts/pnpm.ps1 env-setup`：仅选择 Desktop；服务地址按上游默认 `https://cap.so`，不是 Cap 团队成员则跳过 bypass secret。这个步骤只生成配置，不需要账号密钥；不启动云服务或 Docker。
-7. `./scripts/pnpm.ps1 cap-setup`：执行上游原生依赖准备，下载 FFmpeg 7.1、ONNX Runtime 1.24.2，并生成 `.cargo/config.toml`。
-8. 再次执行 `./scripts/doctor.ps1 -RequireBuildReady`；随后进入 P0 未修改源码的构建验证。
+上游 Cap 的 AGPLv3、指定 crate 的 MIT 许可及第三方原有许可继续有效。本项目不取得 Cap、FFmpeg、微软等商标或第三方组件的所有权。
 
-以上重型准备命令尚未执行；需要正常网络访问 GitHub、npm、Rust 分发服务。不要使用绕过 TLS、关闭杀毒软件或更改全局执行策略的方式处理下载/运行失败。
-
-## 构建与启动边界
-
-上游构建入口是 `./scripts/pnpm.ps1 tauri:build`，会先构建 sidecar，再构建前端和 Tauri。上游 `dev:desktop` 也会触发原生准备及 sidecar 编译，不是轻量预览。
-
-本轮未运行这些命令。P0 首次构建前需确认不生成官方身份的安装器/更新产物；首选无安装器的隔离测试产物。启动前检查开发版数据目录、`cap-desktop` 协议及 `.cap` 关联注册行为，不能仅凭 `so.cap.desktop.dev` 就承诺完全隔离。不要将开发版 EXE 直接覆盖到官方安装目录。
-
-## 依据
-
-- [官方固定版本源码](https://github.com/CapSoftware/Cap/tree/cap-v0.5.9)，实际已下载并核对本地 `CONTRIBUTING.md`、`rust-toolchain.toml`、`package.json`、`scripts/setup.js`、桌面 prepare/build 脚本。
-- [旧译文参考项目](https://github.com/PingGai/Cap-Chinese)，仅记录来源，尚未导入译文；复用前核对来源和许可证。
-- 立项任务：`codex://threads/01a08f53-ac5f-7a50-943d-4353200c6c9f`。
+“主要自用”只是维护定位，**不是禁止商用、分发或修改的附加条款**。软件在适用法律允许范围内按原样提供，不作保证；具体权利、义务和免责范围以适用许可证为准。

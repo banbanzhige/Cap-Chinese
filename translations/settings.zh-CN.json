@@ -1,0 +1,363 @@
+{
+	"settings.tsx": {
+		"70:36": ["Failed to load profile image", "头像加载失败"],
+		"74:19": ["Invalid profile image response", "头像响应无效"],
+		"79:19": ["Profile image is too large", "头像文件过大"],
+		"84:19": ["Profile image is too large", "头像文件过大"],
+		"186:21": ["Failed to load account profile", "账号资料加载失败"],
+		"200:10": ["General", "通用"],
+		"205:10": ["Shortcuts", "快捷键"],
+		"210:10": ["CLI", "命令行"],
+		"215:10": ["Recordings", "录屏"],
+		"220:10": ["Screenshots", "截图"],
+		"225:10": ["Automations", "自动化"],
+		"230:10": ["Transcription", "语音转写"],
+		"235:10": ["Integrations", "集成"],
+		"240:10": ["License", "许可证"],
+		"245:10": ["Experimental", "实验性功能"],
+		"250:10": ["Feedback", "反馈"],
+		"255:10": ["Changelog", "更新日志"],
+		"260:23": ["Click to sign in", "点击登录"],
+		"261:38": ["Signed in", "已登录"],
+		"269:10": ["Signed in", "已登录"],
+		"414:18": ["Version copied to clipboard", "版本号已复制到剪贴板"],
+		"417:16": ["Failed to copy version", "版本号复制失败"],
+		"429:6": [
+			"You're already using the latest version of Cap.",
+			"你已在使用最新版本的 Cap。"
+		],
+		"431:14": ["No Update Available", "暂无更新"],
+		"440:14": ["Update Cap", "更新 Cap"],
+		"440:37": ["Update", "更新"],
+		"440:60": ["Ignore", "忽略"],
+		"448:6": [
+			"Couldn't check for updates automatically. You can download the latest version of Cap from cap.so/download — your data won't be lost.",
+			"无法自动检查更新。你可以从 cap.so/download 下载最新版 Cap，你的数据不会丢失。"
+		],
+		"449:15": ["Update Cap", "更新 Cap"],
+		"449:38": ["Download", "下载"],
+		"449:63": ["Later", "稍后"],
+		"498:8": ["Account", "账号"],
+		"525:16": ["Copy version to clipboard", "复制版本号到剪贴板"],
+		"539:11": ["View previous versions", "查看历史版本"],
+		"548:14": ["Checking...", "检查中…"],
+		"549:14": ["Check for updates", "检查更新"],
+		"563:9": ["Sign Out", "退出登录"],
+		"566:22": ["Sign In", "登录"]
+	},
+	"settings/general.tsx": {
+		"66:68": ["Unknown", "未知"],
+		"122:22": ["60 FPS (Recommended)", "60 FPS（推荐）"],
+		"158:25": ["System", "跟随系统"],
+		"159:24": ["Light", "浅色"],
+		"160:23": ["Dark", "深色"],
+		"171:10": ["Appearance", "外观"],
+		"172:16": [
+			"Match Cap to your system theme or pick a fixed look.",
+			"跟随系统主题，或选择固定的外观。"
+		],
+		"527:13": ["App", "应用"],
+		"528:19": [
+			"Choose how Cap shows up on your system.",
+			"设置 Cap 在系统中的显示方式。"
+		],
+		"532:15": ["Always show dock icon", "始终显示 Dock 图标"],
+		"533:21": [
+			"Keep Cap in the dock even when no windows are open.",
+			"即使没有打开的窗口，也在 Dock 中保留 Cap 图标。"
+		],
+		"538:15": ["System notifications", "系统通知"],
+		"539:21": [
+			"Show notifications for clipboard copies, saved files, and more. You may need to allow Cap in your system's notification settings.",
+			"复制到剪贴板、保存文件等操作完成后显示通知。你可能需要在系统通知设置中允许 Cap 发送通知。"
+		],
+		"576:12": ["Recording", "录制"],
+		"577:18": [
+			"Behaviour while you record and after you stop.",
+			"设置录制期间及停止后的行为。"
+		],
+		"581:14": ["Countdown", "录制倒计时"],
+		"582:20": ["Wait before the recording starts.", "开始录制前等待的时间。"],
+		"586:17": ["Off", "关闭"],
+		"587:17": ["3 seconds", "3 秒"],
+		"588:17": ["5 seconds", "5 秒"],
+		"589:17": ["10 seconds", "10 秒"],
+		"593:14": [
+			"Confirm before recording without a microphone",
+			"无麦克风录制前确认"
+		],
+		"594:20": [
+			"Require confirmation when no microphone is selected or the selected microphone is unavailable.",
+			"未选择麦克风或所选麦克风不可用时，在录制前要求确认。"
+		],
+		"599:14": ["Main window when recording starts", "开始录制时的主窗口"],
+		"600:20": [
+			"What happens to the main window once a recording begins.",
+			"设置开始录制后主窗口的行为。"
+		],
+		"606:17": ["Close", "关闭"],
+		"607:17": ["Minimise", "最小化"],
+		"611:14": ["After a Studio recording", "工作室录制结束后"],
+		"612:20": [
+			"What happens once you stop a Studio recording.",
+			"设置停止工作室录制后的行为。"
+		],
+		"618:17": ["Open editor", "打开编辑器"],
+		"619:17": ["Show in overlay", "显示悬浮窗"],
+		"623:14": ["After deleting a recording", "删除录屏后"],
+		"624:20": [
+			"Whether the recording window should reopen.",
+			"是否重新打开录制窗口。"
+		],
+		"628:17": ["Do nothing", "不执行操作"],
+		"630:16": ["Reopen recording window", "重新打开录制窗口"],
+		"636:14": ["Delete Instant recordings after upload", "上传后删除即时录屏"],
+		"637:20": [
+			"Cap removes the local file once it has uploaded successfully.",
+			"上传成功后，Cap 会删除本地文件。"
+		],
+		"644:14": ["Crash-recoverable recording", "崩溃可恢复录制"],
+		"645:20": [
+			"Record in fragments that can be recovered after a crash or power loss. Slightly larger files during capture.",
+			"分段保存录屏，以便在崩溃或断电后恢复。录制期间会占用稍多的磁盘空间。"
+		],
+		"652:14": ["Custom cursor capture (Studio)", "独立捕获光标（工作室）"],
+		"653:20": [
+			"Capture cursor state separately so you can adjust size and smoothing in the editor.",
+			"单独捕获光标状态，以便在编辑器中调整大小和平滑效果。"
+		],
+		"660:14": ["Auto zoom on clicks", "点击时自动缩放"],
+		"661:20": [
+			"Automatically add zoom segments around mouse clicks in Studio recordings.",
+			"在工作室录屏中，围绕鼠标点击位置自动添加缩放片段。"
+		],
+		"666:14": ["Capture keyboard presses", "捕获按键"],
+		"667:20": [
+			"Record key presses so you can add keyboard overlays in the editor.",
+			"记录按键，以便在编辑器中添加按键显示效果。"
+		],
+		"672:14": [
+			"Draw the MacBook notch on screen recordings",
+			"在录屏中显示 MacBook 刘海"
+		],
+		"673:20": [
+			"Automatically restores the notch for new screen and area recordings when the selected region contains the complete notch. External displays, partial areas, and window recordings are left alone. Each recording can override it in the editor.",
+			"新建屏幕或区域录制包含完整刘海时，自动还原刘海外观。外接显示器、不含完整刘海的区域和窗口录制不受影响，也可在编辑器中单独调整。"
+		],
+		"678:14": ["Max capture framerate", "最高捕获帧率"],
+		"681:12": [
+			"Maximum framerate for screen capture. Higher values may cause drops or increased CPU usage on some systems.",
+			"屏幕捕获的最高帧率。较高设置可能导致部分设备掉帧或增加 CPU 占用。"
+		],
+		"682:12": ["Maximum framerate for screen capture.", "屏幕捕获的最高帧率。"],
+		"840:23": ["Default (Application Support)", "默认（应用数据目录）"],
+		"845:18": ["Storage", "存储"],
+		"845:40": ["Where Cap saves your recordings.", "Cap 保存录屏的位置。"],
+		"856:9": ["Reset to Default", "恢复默认"],
+		"860:8": ["Choose Folder", "选择文件夹"],
+		"874:18": ["Privacy", "隐私"],
+		"877:12": ["Share anonymous telemetry", "分享匿名诊断数据"],
+		"878:18": [
+			"Cap uses anonymous telemetry to improve reliability and fix bugs. We never collect recording contents, window titles, file paths, or personal information.",
+			"Cap 使用匿名诊断数据来提高稳定性并修复问题，不会收集录制内容、窗口标题、文件路径或个人信息。"
+		],
+		"896:10": ["Stable", "稳定版"],
+		"897:16": ["Versioned releases (recommended)", "正式发布版本（推荐）"],
+		"901:10": ["Nightly", "每夜构建版"],
+		"903:4": [
+			"The newest builds, updated automatically in the background when you're not recording or exporting. May be unstable.",
+			"最新构建版本，会在未录制或导出时于后台自动更新，可能不稳定。"
+		],
+		"918:18": ["Updates", "更新"],
+		"918:40": [
+			"Choose which Cap builds you receive.",
+			"选择接收哪类 Cap 版本。"
+		],
+		"923:44": ["Update channel", "更新通道"],
+		"925:9": [
+			"Which release channel Cap updates from.",
+			"选择 Cap 获取更新的发布通道。"
+		],
+		"941:9": [
+			"Switching back to Stable will return you to the latest stable version, which may be older than your current build.",
+			"切回稳定版后，将安装最新稳定版本，其版本可能早于当前构建。"
+		],
+		"962:10": ["Compatibility", "兼容"],
+		"963:12": [
+			"Lower bitrate to keep older or low-power machines smooth.",
+			"使用较低码率，让旧设备或低功耗设备保持流畅。"
+		],
+		"964:12": [
+			"Older Intel Macs, 8GB MacBook Air, weaker laptops.",
+			"旧款 Intel Mac、8GB MacBook Air 或性能较弱的笔记本。"
+		],
+		"968:10": ["Balanced", "均衡"],
+		"969:12": [
+			"Sharp footage with sensible CPU and disk usage.",
+			"兼顾画面清晰度、CPU 占用和磁盘空间。"
+		],
+		"970:12": [
+			"Most modern Macs and PCs with 16GB+ RAM.",
+			"大多数配备 16GB 及以上内存的新款 Mac 和 PC。"
+		],
+		"974:10": ["Ultra", "极致"],
+		"975:12": [
+			"Maximum detail for color-graded, large-display edits.",
+			"保留丰富细节，适合调色和大屏编辑。"
+		],
+		"976:12": [
+			"M-series Pro/Max, discrete GPUs, 32GB+ RAM, NVMe.",
+			"M 系列 Pro/Max、独立显卡、32GB 及以上内存和 NVMe 硬盘。"
+		],
+		"987:41": ["Smallest size, low bandwidth.", "文件最小，带宽占用低。"],
+		"991:12": [
+			"Recommended. Sharp on most networks.",
+			"推荐，在多数网络环境下兼顾清晰度。"
+		],
+		"993:42": ["More detail for desktop content.", "保留更多桌面内容细节。"],
+		"994:39": [
+			"Max clarity. Needs fast upload.",
+			"最高画质，需要较快的上传速度。"
+		],
+		"1044:42": ["Studio mode", "工作室模式"],
+		"1046:7": [
+			"Encoder profile for local Studio recordings.",
+			"本地工作室录屏使用的编码档位。"
+		],
+		"1061:33": ["Best for:", "适合："],
+		"1091:7": [
+			"Upgrade to Cap Pro to record Instant Mode videos above 720p.",
+			"升级到 Cap Pro，即可录制高于 720p 的即时模式视频。"
+		],
+		"1101:7": ["Upgrade", "升级"],
+		"1112:10": ["Instant Mode quality", "即时模式画质"],
+		"1115:8": [
+			"Choose the maximum upload resolution for Instant recordings.",
+			"选择即时录屏的最高上传分辨率。"
+		],
+		"1116:8": [
+			"Instant recordings are locked to 720p. Cap Pro unlocks higher resolutions.",
+			"即时录屏限定为 720p，Cap Pro 可解锁更高分辨率。"
+		],
+		"1159:16": [
+			"Settings available with a Cap Pro license.",
+			"持有 Cap Pro 许可证时可使用的设置。"
+		],
+		"1169:12": ["Auto-open shareable links", "自动打开分享链接"],
+		"1170:18": [
+			"Open the share link in your browser as soon as the upload finishes.",
+			"上传完成后，立即在浏览器中打开分享链接。"
+		],
+		"1185:10": ["Quality", "画质"],
+		"1186:16": [
+			"Pick the right profile for local Studio recordings.",
+			"为本地工作室录屏选择合适的画质档位。"
+		],
+		"1217:10": ["Self-host", "自托管"],
+		"1218:16": [
+			"Only change this if you are running your own instance of Cap Web.",
+			"仅在使用自行部署的 Cap Web 实例时更改此项。"
+		],
+		"1223:46": ["Cap Server URL", "Cap 服务器地址"],
+		"1237:8": ["Reset to Default", "恢复默认"],
+		"1245:8": ["Update", "更新"],
+		"1321:11": ["Click to copy", "点击复制"],
+		"1332:10": ["Default project name", "默认工程名称"],
+		"1333:16": [
+			"Template used for new recordings and exported files.",
+			"新录屏和导出文件使用的命名模板。"
+		],
+		"1351:7": ["Reset", "重置"],
+		"1362:7": ["Save", "保存"],
+		"1389:14": ["Available placeholders", "可用占位符"],
+		"1394:9": [
+			"Click any placeholder to copy it. Time supports custom formats via",
+			"点击占位符即可复制。可用以下写法自定义时间格式："
+		],
+		"1399:45": ["Recording mode", "录制模式"],
+		"1401:52": [
+			"→ \"Studio\", \"Instant\", or \"Screenshot\"",
+			"→ Studio（工作室）、Instant（即时）或 Screenshot（截图）"
+		],
+		"1405:42": [
+			"→ \"studio\", \"instant\", or \"screenshot\"",
+			"→ studio、instant 或 screenshot（原始值）"
+		],
+		"1411:45": ["Target", "录制目标"],
+		"1413:49": [
+			"→ \"Display\", \"Window\", or \"Area\"",
+			"→ Display（屏幕）、Window（窗口）或 Area（区域）"
+		],
+		"1417:49": ["→ Monitor name or window title.", "→ 显示器名称或窗口标题。"],
+		"1423:45": ["Date &amp; time", "日期与时间"],
+		"1521:10": ["Excluded windows", "排除窗口"],
+		"1524:8": [
+			"Hide windows from recordings. On Windows, only Cap-related windows can be excluded.",
+			"在录屏中隐藏指定窗口。Windows 仅支持排除 Cap 相关窗口。"
+		],
+		"1525:8": ["Hide windows from recordings.", "在录屏中隐藏指定窗口。"],
+		"1535:7": ["Reset", "重置"],
+		"1545:7": ["Add", "添加"],
+		"1557:10": [
+			"Recommended Cap windows are not excluded",
+			"尚未排除建议隐藏的 Cap 窗口"
+		],
+		"1560:10": [
+			"Camera, settings, or recording windows can appear as black boxes in screen recordings. Missing:",
+			"摄像头、设置或录制窗口可能在录屏中显示为黑块。尚未排除："
+		],
+		"1571:9": ["Restore", "恢复"],
+		"1581:9": ["No windows are currently excluded.", "目前没有排除任何窗口。"],
+		"1603:23": ["Remove excluded window", "移除排除窗口"]
+	},
+	"settings/hotkeys.tsx": {
+		"26:24": ["Start studio recording", "开始工作室录制"],
+		"27:25": ["Start instant recording", "开始即时录制"],
+		"28:20": ["Restart recording", "重新录制"],
+		"29:17": ["Stop recording", "停止录制"],
+		"30:24": ["Pause/resume recording", "暂停／继续录制"],
+		"31:22": ["Cycle recording mode", "切换录制模式"],
+		"32:23": ["Open recording picker", "打开录制选择器"],
+		"33:30": ["Record display", "录制屏幕"],
+		"34:29": ["Record window", "录制窗口"],
+		"35:27": ["Record area", "录制区域"],
+		"36:21": ["Screenshot current display", "截取当前屏幕"],
+		"37:20": ["Screenshot current window", "截取当前窗口"],
+		"38:18": ["Screenshot area picker", "选择截图区域"],
+		"104:12": ["Shortcuts", "快捷键"],
+		"105:18": [
+			"Configure system-wide keyboard shortcuts to control Cap.",
+			"配置用于控制 Cap 的全局快捷键。"
+		],
+		"132:18": ["Set hotkeys...", "请按下快捷键…"],
+		"195:18": ["None", "未设置"]
+	},
+	"settings/recordings.tsx": {
+		"50:10": ["Show all", "全部"],
+		"55:10": ["Instant", "即时"],
+		"60:10": ["Studio", "工作室"],
+		"205:12": ["Recordings", "录屏"],
+		"206:18": [
+			"Manage your recordings and perform actions.",
+			"管理录屏并执行相关操作。"
+		],
+		"215:14": ["Import", "导入"],
+		"223:9": ["No recordings found", "暂无录屏"],
+		"259:22": ["Search", "搜索"],
+		"264:21": ["Search recordings", "搜索录屏"],
+		"311:11": ["Load more", "加载更多"],
+		"359:11": ["Recording thumbnail", "录屏缩略图"],
+		"385:46": ["clips", "个片段"],
+		"396:12": ["Recording in progress", "正在录制"],
+		"416:13": ["Recording failed", "录制失败"],
+		"450:10": [
+			"The recording failed so this file may have issues in the editor! If your having issues recovering the file please reach out to support!",
+			"录制失败，此文件在编辑器中可能无法正常使用。如无法恢复文件，请联系支持团队。"
+		],
+		"452:18": ["Recording is potentially corrupted", "录屏可能已损坏"],
+		"522:23": [
+			"Are you sure you want to delete this recording?",
+			"确定要删除这段录屏吗？"
+		]
+	}
+}

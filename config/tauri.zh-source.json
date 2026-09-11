@@ -1,0 +1,8 @@
+{
+  "productName": "Cap Chinese",
+  "mainBinaryName": "Cap Chinese",
+  "identifier": "so.cap.desktop.zh",
+  "build": {"beforeBuildCommand": "", "frontendDist": "../.output/public"},
+  "plugins": {"deep-link": {"desktop": {"schemes": ["cap-zh"]}}},
+  "bundle": {"active": false, "createUpdaterArtifacts": false, "fileAssociations": []}
+}

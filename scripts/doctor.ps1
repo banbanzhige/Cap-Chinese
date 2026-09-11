@@ -1,4 +1,7 @@
-param([switch]$RequireBuildReady)
+param(
+    [switch]$RequireBuildReady,
+    [ValidateRange(10, 1000)][int]$MinimumFreeGiB = 50
+)
 
 $ErrorActionPreference = 'Stop'
 $capRoot = Split-Path $PSScriptRoot -Parent
@@ -25,6 +28,19 @@ foreach ($capEntry in $capLock.lockfiles.PSObject.Properties) {
     $capHash = if (Test-Path -LiteralPath $capFile) { (Get-FileHash -LiteralPath $capFile -Algorithm SHA256).Hash } else { 'Missing' }
     Add-CapCheck $capEntry.Name ($capHash -eq $capEntry.Value) $capHash
 }
+$capManifestFile = Join-Path $capSource 'apps/desktop/src-tauri/Cargo.toml'
+$capCargoLockFile = Join-Path $capSource 'Cargo.lock'
+$capManifestVersion = $null
+$capLockedVersion = $null
+if (Test-Path -LiteralPath $capManifestFile) {
+    $capManifestText = Get-Content -Raw -LiteralPath $capManifestFile
+    if ($capManifestText -match '(?m)^version\s*=\s*"([^"]+)"') { $capManifestVersion = $Matches[1] }
+}
+if (Test-Path -LiteralPath $capCargoLockFile) {
+    $capCargoLockText = Get-Content -Raw -LiteralPath $capCargoLockFile
+    if ($capCargoLockText -match '(?m)^name = "cap-desktop"\r?\nversion = "([^"]+)"') { $capLockedVersion = $Matches[1] }
+}
+Add-CapCheck 'Cargo package version' ([bool]$capManifestVersion -and $capManifestVersion -eq $capLockedVersion) "Manifest=$capManifestVersion; official lock=$capLockedVersion"
 
 $capPnpm = Join-Path $capRoot 'tooling/node_modules/pnpm/bin/pnpm.cjs'
 if ($capNode -and (Test-Path -LiteralPath $capPnpm)) {
@@ -58,7 +74,7 @@ $capWebview = Get-ItemProperty -Path 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\EdgeU
 Add-CapCheck 'WebView2' ([bool]$capWebview) $(if ($capWebview) { $capWebview.pv } else { 'Not detected' })
 $capDrive = (Get-Item -LiteralPath $capRoot).PSDrive
 $capFreeGB = [math]::Round($capDrive.Free / 1GB, 1)
-Add-CapCheck 'Build disk headroom' ($capFreeGB -ge 50) "$($capDrive.Name): $capFreeGB GiB free; local safety budget is 50 GiB, not an upstream minimum"
+Add-CapCheck 'Build disk headroom' ($capFreeGB -ge $MinimumFreeGiB) "$($capDrive.Name): $capFreeGB GiB free; selected safety budget is $MinimumFreeGiB GiB, not an upstream minimum"
 foreach ($capArtifact in @(
     @{Name='JS dependencies'; Path='node_modules/.modules.yaml'},
     @{Name='Desktop environment'; Path='.env'},
@@ -69,6 +85,17 @@ foreach ($capArtifact in @(
     $capArtifactPath = Join-Path $capSource $capArtifact.Path
     Add-CapCheck $capArtifact.Name (Test-Path -LiteralPath $capArtifactPath) $capArtifact.Path
 }
+$capNativeConfig = Join-Path $capSource '.cargo/config.toml'
+$capConfiguredClang = $env:LIBCLANG_PATH
+if (-not $capConfiguredClang -and (Test-Path -LiteralPath $capNativeConfig)) {
+    $capConfigText = Get-Content -Raw -LiteralPath $capNativeConfig
+    if ($capConfigText -match '(?m)^LIBCLANG_PATH\s*=\s*"([^"]+)"') { $capConfiguredClang = $Matches[1] }
+}
+$capClangDll = $capConfiguredClang
+if ($capClangDll -and (Test-Path -LiteralPath $capClangDll -PathType Container)) {
+    $capClangDll = Join-Path $capClangDll 'libclang.dll'
+}
+Add-CapCheck 'Effective libclang path' ([bool]$capClangDll -and [IO.Path]::IsPathRooted($capClangDll) -and (Test-Path -LiteralPath $capClangDll -PathType Leaf)) $(if ($capClangDll) { $capClangDll } else { 'Missing' })
 $capRows | Format-Table -AutoSize -Wrap
 $capPending = @($capRows | Where-Object Status -eq 'PENDING').Count
 Write-Host "$capPending pending checks. File presence does not prove a successful build."

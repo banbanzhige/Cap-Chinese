@@ -1,0 +1,409 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 638cb957a7cb207ed56960427ad74ef88798e890..9a10a9e4c0829dda1c3d66ea3ca1f67725896a8e 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1434,7 +1434,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "cap-desktop"
+-version = "0.5.8"
++version = "0.5.9"
+ dependencies = [
+  "aho-corasick",
+  "anyhow",
+diff --git a/apps/cli/src/automation.rs b/apps/cli/src/automation.rs
+index 8b3572d1c9f1aff3927ff8e53bc588062d93c3f9..006e5d0f1b7513f63f26d467e8dd362a1fee52a7 100644
+--- a/apps/cli/src/automation.rs
++++ b/apps/cli/src/automation.rs
+@@ -14,7 +14,7 @@ use cap_automation::{
+ use cap_recording::screen_capture::ScreenCaptureTarget;
+ use serde_json::Value;
+ 
+-const DESKTOP_BUNDLE_IDS: [&str; 2] = ["so.cap.desktop", "so.cap.desktop.dev"];
++const DESKTOP_BUNDLE_IDS: [&str; 1] = ["so.cap.desktop.zh"];
+ 
+ const WEBHOOK_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(30);
+ const COMMAND_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(300);
+diff --git a/apps/cli/src/credentials.rs b/apps/cli/src/credentials.rs
+index ad9b4225d0371355e16e265d0a070c87ab5900a2..6d5fef53c4ae699f5566bcc0bbe6c861930c978c 100644
+--- a/apps/cli/src/credentials.rs
++++ b/apps/cli/src/credentials.rs
+@@ -15,11 +15,10 @@ use crate::atomic;
+ use crate::{OutputFormat, write_json};
+ 
+ pub const DEFAULT_SERVER: &str = "https://cap.so";
+-const AGENT_KEYRING_SERVICE: &str = "so.cap.cli";
++const AGENT_KEYRING_SERVICE: &str = "so.cap.cli.zh";
+ const AGENT_KEYRING_USER: &str = "agent-api";
+ const AGENT_GRANTS_KEYRING_USER: &str = "agent-access-grants";
+-// Prod first, then the dev bundle, so a released install wins on a machine that has both.
+-const DESKTOP_BUNDLE_IDS: [&str; 2] = ["so.cap.desktop", "so.cap.desktop.dev"];
++const DESKTOP_BUNDLE_IDS: [&str; 1] = ["so.cap.desktop.zh"];
+ 
+ #[derive(Serialize, Clone, Copy, PartialEq, Eq)]
+ #[serde(rename_all = "camelCase")]
+@@ -196,13 +195,13 @@ const fn file_fallback_supported() -> bool {
+ 
+ fn agent_credential_path() -> Result<std::path::PathBuf, String> {
+     dirs::config_dir()
+-        .map(|path| path.join("cap").join("agent-credentials.json"))
++        .map(|path| path.join("cap-chinese").join("agent-credentials.json"))
+         .ok_or_else(|| "Could not locate the user configuration directory".to_string())
+ }
+ 
+ fn agent_grants_path() -> Result<std::path::PathBuf, String> {
+     dirs::config_dir()
+-        .map(|path| path.join("cap").join("agent-access-grants.json"))
++        .map(|path| path.join("cap-chinese").join("agent-access-grants.json"))
+         .ok_or_else(|| "Could not locate the user configuration directory".to_string())
+ }
+ 
+diff --git a/apps/cli/src/recordings.rs b/apps/cli/src/recordings.rs
+index c633bb4a034de9281ee3d749800a60a8b7ca0774..21cbcd664e97cceadb8311e0ffeaa03c7ebbf814 100644
+--- a/apps/cli/src/recordings.rs
++++ b/apps/cli/src/recordings.rs
+@@ -8,9 +8,7 @@ use serde::Serialize;
+ 
+ use crate::{OutputFormat, write_json};
+ 
+-// Production bundle identifier; matches tauri.prod.conf.json. Dev builds use `so.cap.desktop.dev`,
+-// which the user can reach with an explicit `--dir`.
+-const DESKTOP_BUNDLE_IDENTIFIER: &str = "so.cap.desktop";
++const DESKTOP_BUNDLE_IDENTIFIER: &str = "so.cap.desktop.zh";
+ 
+ fn default_library_dir() -> Result<PathBuf, String> {
+     dirs::data_dir()
+diff --git a/apps/desktop/src-tauri/src/main.rs b/apps/desktop/src-tauri/src/main.rs
+index ab1dc76e71531044f50c79eb63a2e24ef00566f3..c26e19989f07be75e5fd899681f6d1a4e234c4ef 100644
+--- a/apps/desktop/src-tauri/src/main.rs
++++ b/apps/desktop/src-tauri/src/main.rs
+@@ -1,5 +1,5 @@
+ #![recursion_limit = "256"]
+-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
++#![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
+ 
+ use std::sync::Arc;
+ 
+@@ -75,7 +75,7 @@ fn main() {
+         #[cfg(not(target_os = "macos"))]
+         let path = dirs::data_local_dir()
+             .unwrap()
+-            .join("so.cap.desktop")
++            .join("so.cap.desktop.zh")
+             .join("logs");
+ 
+         path
+diff --git a/apps/desktop/src-tauri/src/notifications.rs b/apps/desktop/src-tauri/src/notifications.rs
+index d872fd8380f4e1b1a6faf371dede5da13fa1e590..bfd0dd787ee7f63ed2e577be4c819c62e180baf5 100644
+--- a/apps/desktop/src-tauri/src/notifications.rs
++++ b/apps/desktop/src-tauri/src/notifications.rs
+@@ -19,58 +19,30 @@ pub enum NotificationType {
+ impl NotificationType {
+     fn details(&self) -> (&'static str, &'static str, bool) {
+         match self {
+-            NotificationType::VideoSaved => ("Video Saved", "Video saved successfully", false),
+-            NotificationType::VideoCopiedToClipboard => {
+-                ("Video Copied", "Video copied to clipboard", false)
+-            }
+-            NotificationType::ShareableLinkCopied => {
+-                ("Link Copied", "Link copied to clipboard", false)
+-            }
+-            NotificationType::UploadFailed => (
+-                "Upload Failed",
+-                "Unable to upload media. Please try again",
+-                true,
+-            ),
+-            NotificationType::VideoSaveFailed => (
+-                "Save Failed",
+-                "Unable to save video. Please try again",
+-                true,
+-            ),
+-            NotificationType::VideoCopyFailed => (
+-                "Copy Failed",
+-                "Unable to copy video to clipboard. Please try again",
+-                true,
+-            ),
+-            NotificationType::ShareableLinkFailed => (
+-                "Share Failed",
+-                "Unable to create shareable link. Please try again",
+-                true,
+-            ),
+-            NotificationType::ScreenshotSaved => {
+-                ("Screenshot Saved", "Screenshot saved successfully", false)
++            NotificationType::VideoSaved => ("视频已保存", "视频保存成功", false),
++            NotificationType::VideoCopiedToClipboard => ("视频已复制", "视频已复制到剪贴板", false),
++            NotificationType::ShareableLinkCopied => ("链接已复制", "链接已复制到剪贴板", false),
++            NotificationType::UploadFailed => ("上传失败", "媒体上传失败，请重试", true),
++            NotificationType::VideoSaveFailed => ("保存失败", "视频保存失败，请重试", true),
++            NotificationType::VideoCopyFailed => {
++                ("复制失败", "无法将视频复制到剪贴板，请重试", true)
+             }
++            NotificationType::ShareableLinkFailed => ("分享失败", "无法创建分享链接，请重试", true),
++            NotificationType::ScreenshotSaved => ("截图已保存", "截图保存成功", false),
+             NotificationType::ScreenshotCopiedToClipboard => {
+-                ("Screenshot Copied", "Screenshot copied to clipboard", false)
++                ("截图已复制", "截图已复制到剪贴板", false)
++            }
++            NotificationType::ScreenshotSaveFailed => ("保存失败", "截图保存失败，请重试", true),
++            NotificationType::ScreenshotCopyFailed => {
++                ("复制失败", "无法将截图复制到剪贴板，请重试", true)
+             }
+-            NotificationType::ScreenshotSaveFailed => (
+-                "Save Failed",
+-                "Unable to save screenshot. Please try again",
+-                true,
+-            ),
+-            NotificationType::ScreenshotCopyFailed => (
+-                "Copy Failed",
+-                "Unable to copy screenshot to clipboard. Please try again",
+-                true,
+-            ),
+         }
+     }
+ 
+     #[allow(unused)]
+     pub fn message(&self) -> &'static str {
+         match self {
+-            NotificationType::UploadFailed => {
+-                "Failed to upload your video after multiple attempts. Please try again later."
+-            }
++            NotificationType::UploadFailed => "多次尝试后仍无法上传视频，请稍后重试。",
+             _ => "",
+         }
+     }
+@@ -78,7 +50,7 @@ impl NotificationType {
+     #[allow(unused)]
+     pub fn title(&self) -> &'static str {
+         match self {
+-            NotificationType::UploadFailed => "Upload Failed",
++            NotificationType::UploadFailed => "上传失败",
+             _ => "",
+         }
+     }
+diff --git a/apps/desktop/src-tauri/src/tray.rs b/apps/desktop/src-tauri/src/tray.rs
+index 4d0d8f7e3e750fc430a265721c38c750570b9b5d..d8de6a3d2ddc164caaadd789d638be6d3489c6ff 100644
+--- a/apps/desktop/src-tauri/src/tray.rs
++++ b/apps/desktop/src-tauri/src/tray.rs
+@@ -320,18 +320,18 @@ fn create_previous_submenu(
+     cache: &PreviousItemsCache,
+ ) -> tauri::Result<Submenu<tauri::Wry>> {
+     if cache.items.is_empty() {
+-        let submenu = Submenu::with_id(app, "previous", "Previous", false)?;
++        let submenu = Submenu::with_id(app, "previous", "最近使用", false)?;
+         submenu.append(&MenuItem::with_id(
+             app,
+             "previous_empty",
+-            "No recent items",
++            "暂无最近项目",
+             false,
+             None::<&str>,
+         )?)?;
+         return Ok(submenu);
+     }
+ 
+-    let submenu = Submenu::with_id(app, "previous", "Previous", true)?;
++    let submenu = Submenu::with_id(app, "previous", "最近使用", true)?;
+ 
+     for item in &cache.items {
+         let id = TrayItem::PreviousItem(item.path.to_string_lossy().to_string());
+@@ -384,16 +384,12 @@ pub(crate) fn refresh_tray_menu_for_app(app: &AppHandle) {
+ fn create_mode_submenu(app: &AppHandle) -> tauri::Result<Submenu<tauri::Wry>> {
+     let current_mode = get_current_mode(app);
+ 
+-    let submenu = Submenu::with_id(app, "select_mode", "Select Mode", true)?;
++    let submenu = Submenu::with_id(app, "select_mode", "选择模式", true)?;
+ 
+     let modes = [
+-        (TrayItem::ModeStudio, RecordingMode::Studio, "Studio"),
+-        (TrayItem::ModeInstant, RecordingMode::Instant, "Instant"),
+-        (
+-            TrayItem::ModeScreenshot,
+-            RecordingMode::Screenshot,
+-            "Screenshot",
+-        ),
++        (TrayItem::ModeStudio, RecordingMode::Studio, "工作室"),
++        (TrayItem::ModeInstant, RecordingMode::Instant, "即时"),
++        (TrayItem::ModeScreenshot, RecordingMode::Screenshot, "截图"),
+     ];
+ 
+     for (tray_item, mode, label) in modes {
+@@ -419,7 +415,7 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+                 &MenuItem::with_id(
+                     app,
+                     TrayItem::RequestPermissions,
+-                    "Request Permissions",
++                    "请求权限",
+                     true,
+                     None::<&str>,
+                 )?,
+@@ -431,7 +427,7 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+                     false,
+                     None::<&str>,
+                 )?,
+-                &MenuItem::with_id(app, TrayItem::Quit, "Quit Cap", true, None::<&str>)?,
++                &MenuItem::with_id(app, TrayItem::Quit, "退出 Cap", true, None::<&str>)?,
+             ],
+         );
+     }
+@@ -446,7 +442,7 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+     menu.append(&MenuItem::with_id(
+         app,
+         TrayItem::OpenCap,
+-        "Open Main Window",
++        "打开主窗口",
+         true,
+         None::<&str>,
+     )?)?;
+@@ -455,21 +451,21 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+         menu.append(&MenuItem::with_id(
+             app,
+             TrayItem::RecordDisplay,
+-            "Screenshot Display",
++            "截取屏幕",
+             true,
+             None::<&str>,
+         )?)?;
+         menu.append(&MenuItem::with_id(
+             app,
+             TrayItem::RecordWindow,
+-            "Screenshot Window",
++            "截取窗口",
+             true,
+             None::<&str>,
+         )?)?;
+         menu.append(&MenuItem::with_id(
+             app,
+             TrayItem::RecordArea,
+-            "Screenshot Area",
++            "截取区域",
+             true,
+             None::<&str>,
+         )?)?;
+@@ -477,28 +473,28 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+         menu.append(&MenuItem::with_id(
+             app,
+             TrayItem::RecordDisplay,
+-            "Record Display",
++            "录制屏幕",
+             true,
+             None::<&str>,
+         )?)?;
+         menu.append(&MenuItem::with_id(
+             app,
+             TrayItem::RecordWindow,
+-            "Record Window",
++            "录制窗口",
+             true,
+             None::<&str>,
+         )?)?;
+         menu.append(&MenuItem::with_id(
+             app,
+             TrayItem::RecordArea,
+-            "Record Area",
++            "录制区域",
+             true,
+             None::<&str>,
+         )?)?;
+         menu.append(&MenuItem::with_id(
+             app,
+             TrayItem::TakeScreenshot,
+-            "Take a Screenshot",
++            "截图",
+             true,
+             None::<&str>,
+         )?)?;
+@@ -507,7 +503,7 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+     menu.append(&MenuItem::with_id(
+         app,
+         TrayItem::ImportVideo,
+-        "Import Media...",
++        "导入媒体…",
+         true,
+         None::<&str>,
+     )?)?;
+@@ -520,21 +516,21 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+     menu.append(&MenuItem::with_id(
+         app,
+         TrayItem::ViewAllRecordings,
+-        "View all recordings",
++        "查看全部录屏",
+         true,
+         None::<&str>,
+     )?)?;
+     menu.append(&MenuItem::with_id(
+         app,
+         TrayItem::ViewAllScreenshots,
+-        "View all screenshots",
++        "查看全部截图",
+         true,
+         None::<&str>,
+     )?)?;
+     menu.append(&MenuItem::with_id(
+         app,
+         TrayItem::OpenSettings,
+-        "Settings",
++        "设置",
+         true,
+         None::<&str>,
+     )?)?;
+@@ -543,7 +539,7 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+     menu.append(&MenuItem::with_id(
+         app,
+         TrayItem::UploadLogs,
+-        "Upload Logs",
++        "上传日志",
+         true,
+         None::<&str>,
+     )?)?;
+@@ -557,7 +553,7 @@ fn build_tray_menu(app: &AppHandle, cache: &PreviousItemsCache) -> tauri::Result
+     menu.append(&MenuItem::with_id(
+         app,
+         TrayItem::Quit,
+-        "Quit Cap",
++        "退出 Cap",
+         true,
+         None::<&str>,
+     )?)?;
+diff --git a/apps/desktop/src-tauri/src/windows.rs b/apps/desktop/src-tauri/src/windows.rs
+index 4dec972b3accf2cae83a6dff42a037fb3bc70bfd..5ee1b4a684b94d23d3d8841dcfe4673aae55e277 100644
+--- a/apps/desktop/src-tauri/src/windows.rs
++++ b/apps/desktop/src-tauri/src/windows.rs
+@@ -1025,18 +1025,18 @@ impl CapWindowId {
+ 
+     pub fn title(&self) -> String {
+         match self {
+-            Self::Settings => "Cap Settings".to_string(),
++            Self::Settings => "Cap 设置".to_string(),
+             Self::WindowCaptureOccluder { .. } => "Cap Window Capture Occluder".to_string(),
+-            Self::CaptureArea => "Cap Capture Area".to_string(),
+-            Self::RecordingControls => "Cap Recording Controls".to_string(),
+-            Self::Editor { .. } => "Cap Editor".to_string(),
+-            Self::ScreenshotEditor { .. } => "Cap Screenshot Editor".to_string(),
+-            Self::ModeSelect => "Cap Mode Selection".to_string(),
+-            Self::Onboarding => "Welcome to Cap".to_string(),
+-            Self::Camera => "Cap Camera".to_string(),
+-            Self::RecordingsOverlay => "Cap Recordings Overlay".to_string(),
+-            Self::TargetSelectOverlay { .. } => "Cap Target Select".to_string(),
+-            Self::Teleprompter => "Cap Teleprompter".to_string(),
++            Self::CaptureArea => "Cap 录制区域".to_string(),
++            Self::RecordingControls => "Cap 录制控制".to_string(),
++            Self::Editor { .. } => "Cap 编辑器".to_string(),
++            Self::ScreenshotEditor { .. } => "Cap 截图编辑器".to_string(),
++            Self::ModeSelect => "Cap 模式选择".to_string(),
++            Self::Onboarding => "欢迎使用 Cap".to_string(),
++            Self::Camera => "Cap 摄像头".to_string(),
++            Self::RecordingsOverlay => "Cap 录屏悬浮窗".to_string(),
++            Self::TargetSelectOverlay { .. } => "Cap 目标选择".to_string(),
++            Self::Teleprompter => "Cap 提词器".to_string(),
+             _ => "Cap".to_string(),
+         }
+     }
+@@ -3028,7 +3028,7 @@ impl ShowCapWindow {
+ 
+             let bg_color = if is_dark { "#141414" } else { "#ffffff" };
+             let init_script = format!(
+-                r#"(function(){{var s=document.createElement('style');s.textContent='html,body{{background-color:{bg_color}}}';document.documentElement.appendChild(s);}})();"#
++                r#"(function(){{function apply(){{var s=document.createElement('style');s.textContent='html,body{{background-color:{bg_color}}}';document.documentElement.appendChild(s);}}if(document.documentElement){{apply();}}else{{document.addEventListener('DOMContentLoaded',apply,{{once:true}});}}}})();"#
+             );
+             builder = builder.initialization_script(&init_script);
+ 

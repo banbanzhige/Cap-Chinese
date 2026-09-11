@@ -1,0 +1,17 @@
+{
+	"git.autoRepositoryDetection": false,
+	"git.repositoryScanIgnoredFolders": [
+		"upstream",
+		"tooling/cargo-probe",
+		"references",
+		"output",
+		"work"
+	],
+	"files.watcherExclude": {
+		"**/node_modules/**": true,
+		"**/target/**": true,
+		"**/output/**": true,
+		"**/dist/**": true,
+		"**/.pnpm-store/**": true
+	}
+}

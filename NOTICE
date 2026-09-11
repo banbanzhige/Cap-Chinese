@@ -1,0 +1,37 @@
+Cap Chinese — unofficial Simplified Chinese adaptation of Cap
+
+Upstream: CapSoftware/Cap, cap-v0.5.9
+Commit: c6b83804d2e9fa8757b75268e573b8ff113141bb
+Copyright (c) 2023-present Cap Software, Inc.
+https://github.com/CapSoftware/Cap
+
+Translation reference: PingGai/Cap-Chinese
+Commit: 02f072d968274b09015554a047d47e05ddff74a8
+https://github.com/PingGai/Cap-Chinese
+Original notices and copyright ownership remain with their respective holders.
+
+This project provides additional Chinese translations, source patches,
+build/check scripts and documentation. Modifications include translated UI
+and native menus, isolated local data identifiers, the desktop self-package
+lockfile version correction, frontend embedding configuration, and a window
+background initialization timing fix. See the complete patches and docs.
+
+Unless expressly identified otherwise, this repository's original additions
+are licensed under GNU Affero General Public License version 3 only
+(SPDX-License-Identifier: AGPL-3.0-only). The full text is in LICENSE.
+This notice does not relicense third-party materials or override their notices.
+
+The original Cap licensing allocation is preserved in licenses/Cap-LICENSE:
+the designated cap-camera* and scap-* crate families are MIT licensed;
+other upstream content is AGPLv3 except third-party components under their
+own licenses. See licenses/Cap-MIT-LICENSE and licenses/Cap-Chinese-LICENSE.
+
+Cap Chinese is not an official Cap distribution and is not endorsed by
+Cap Software, PingGai, Microsoft, or the FFmpeg project. Names and logos
+remain the property of their respective owners. No trademark permission
+or paid/cloud service entitlement is granted by this notice.
+
+Personal-use maintenance is a project focus, not an additional license
+restriction. Warranty and liability limitations are those of the applicable
+licenses, subject to applicable law. See docs/LICENSING.md and
+docs/THIRD-PARTY-NOTICES.md for scope and distribution notes.
